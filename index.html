@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>지역 소개 웹사이트</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { padding-top: 56px; }
+        .carousel-item { height: 65vh; min-height: 300px; background: no-repeat center center scroll; background-size: cover; }
+        .footer { text-align: center; padding: 1em 0; background: #f8f9fa; }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#"><img src="image/logo.png" alt="로고" id="logo" style="height: 30px;"></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showContent('ko')">한국어</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showContent('en')">English</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Carousel -->
+    <header>
+        <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+            <ol class="carousel-indicators">
+                <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+            </ol>
+            <div class="carousel-inner" role="listbox">
+                <div class="carousel-item active" id="carousel-item-1" style="background-image: url('image/image1.jpg')"></div>
+                <div class="carousel-item" id="carousel-item-2" style="background-image: url('image/image2.jpg')"></div>
+                <div class="carousel-item" id="carousel-item-3" style="background-image: url('image/image3.jpg')"></div>
+            </div>
+            <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
+    </header>
+
+    <!-- Page Content -->
+    <div class="container">
+        <div id="content-ko" class="content">
+            <h1>안동을 소개합니다!!!</h1>
+            <p id="ko-text">이곳은 한국어로 된 지역 명소 소개글입니다.</p>
+        </div>
+        <div id="content-en" class="content" style="display: none;">
+            <h1>Introduce Andong!!!</h1>
+            <p id="en-text">This is an introduction to local attractions in English.</p>
+        </div>
+        <div class="form-group">
+            <label for="ko-encoded">한국어 텍스트 (encoded):</label>
+            <input type="text" class="form-control" id="ko-encoded">
+            <label for="ko-encoding">Encoding 방식:</label>
+            <select class="form-control" id="ko-encoding">
+                <option value="ascii">ASCII</option>
+                <option value="utf-16">UTF-16</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="en-encoded">English Text (encoded):</label>
+            <input type="text" class="form-control" id="en-encoded">
+            <label for="en-encoding">Encoding 방식:</label>
+            <select class="form-control" id="en-encoding">
+                <option value="ascii">ASCII</option>
+                <option value="utf-16">UTF-16</option>
+            </select>
+        </div>
+
+        <!-- Image Uploads -->
+        <div id="image-upload-section">
+            <div class="form-group mt-4">
+                <label for="image-upload-1">첫 번째 이미지 업로드:</label>
+                <input type="file" class="form-control-file" id="image-upload-1" accept="image/*">
+            </div>
+            <div class="form-group">
+                <label for="image-upload-2">두 번째 이미지 업로드:</label>
+                <input type="file" class="form-control-file" id="image-upload-2" accept="image/*">
+            </div>
+            <div class="form-group">
+                <label for="image-upload-3">세 번째 이미지 업로드:</label>
+                <input type="file" class="form-control-file" id="image-upload-3" accept="image/*">
+            </div>
+            <div class="form-group">
+                <label for="logo-upload">로고 이미지 업로드:</label>
+                <input type="file" class="form-control-file" id="logo-upload" accept="image/*">
+            </div>
+        </div>
+        <button class="btn btn-primary" onclick="updateAll()">업데이트</button>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p class="m-0">5월 31일 1학년 3반 수업 자료</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        let images = {};
+
+        function showContent(lang) {
+            if (lang === 'ko') {
+                document.getElementById('content-ko').style.display = 'block';
+                document.getElementById('content-en').style.display = 'none';
+            } else {
+                document.getElementById('content-ko').style.display = 'none';
+                document.getElementById('content-en').style.display = 'block';
+            }
+        }
+
+        function updateText() {
+            const koEncoded = document.getElementById('ko-encoded').value;
+            const koEncoding = document.getElementById('ko-encoding').value;
+            const enEncoded = document.getElementById('en-encoded').value;
+            const enEncoding = document.getElementById('en-encoding').value;
+
+            document.getElementById('ko-text').innerText = decodeText(koEncoded, koEncoding);
+            document.getElementById('en-text').innerText = decodeText(enEncoded, enEncoding);
+        }
+
+        function decodeText(encodedText, encoding) {
+            if (encoding === 'ascii') {
+                return encodedText.split(' ').map(char => String.fromCharCode(parseInt(char, 2))).join('');
+            } else if (encoding === 'utf-16') {
+                return encodedText.split('\\u').slice(1).map(char => String.fromCharCode(parseInt(char, 16))).join('');
+            } else {
+                return '';
+            }
+        }
+
+        function storeImage(fileInput, key) {
+            const file = fileInput.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    images[key] = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function updateAll() {
+            updateText();
+
+            if (images['image1']) {
+                document.getElementById('carousel-item-1').style.backgroundImage = 'url(' + images['image1'] + ')';
+            }
+            if (images['image2']) {
+                document.getElementById('carousel-item-2').style.backgroundImage = 'url(' + images['image2'] + ')';
+            }
+            if (images['image3']) {
+                document.getElementById('carousel-item-3').style.backgroundImage = 'url(' + images['image3'] + ')';
+            }
+            if (images['logo']) {
+                document.getElementById('logo').src = images['logo'];
+            }
+
+            hideFormElements();
+        }
+
+        function hideFormElements() {
+            document.querySelectorAll('.form-group').forEach(element => element.classList.add('hidden'));
+            document.querySelector('button.btn-primary').classList.add('hidden');
+        }
+
+        document.getElementById('image-upload-1').addEventListener('change', function() {
+            storeImage(this, 'image1');
+        });
+        document.getElementById('image-upload-2').addEventListener('change', function() {
+            storeImage(this, 'image2');
+        });
+        document.getElementById('image-upload-3').addEventListener('change', function() {
+            storeImage(this, 'image3');
+        });
+        document.getElementById('logo-upload').addEventListener('change', function() {
+            storeImage(this, 'logo');
+        });
+    </script>
+</body>
+</html>
